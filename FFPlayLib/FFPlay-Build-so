@@ -1,0 +1,35 @@
+echo 'Delete old files'
+rm FFPlay-play
+rm *.o
+rm libFFPlay.so
+
+cp ./configs/config-ubuntu.h ./config.h
+
+gcc -fPIC -I. -O3 -c -o cmdutils.o cmdutils.c 
+gcc -fPIC -I. -I./ -I/usr/include/SDL -Dmain=SDL_main -c -o FFPlayLib.o FFPlayLib.c 
+
+# Build for Raspberian for Raspberry Pi 1
+#gcc -shared -o libFFPlay.so FFPlayLib.o cmdutils.o -lavdevice \
+#-lavformat -lavcodec -lswresample -lswscale -lavutil -ldl -lasound -lSDL \
+#-lm -pthread -lz -lrt
+
+# Build for Ubuntu 10.04 LTM
+#gcc -shared -o libFFPlay.so FFPlayLib.o cmdutils.o -lavdevice \
+#-lavformat -lavcodec -lswresample -lswscale -lavutil -ldl -ljack -lSDL \
+#-lm -pthread -lz -lrt
+
+# Build for Ubuntu 14.04/16.04 LTM
+gcc -shared -o libFFPlay.so FFPlayLib.o cmdutils.o -lavdevice \
+-lavformat -lavcodec -lswresample -lswscale -lavutil -ldl -lasound -lSDL \
+-lm -pthread -lz -lrt 
+
+strip libFFPlay.so
+
+
+gcc -I. -I./ -c -o FFPlay.o FFPlay.c
+gcc -o FFPlay FFPlay.o libFFPlay.so
+strip FFPlay
+
+rm ./config.h
+rm *.o
+

@@ -1,0 +1,19 @@
+echo 'Delete old files'
+rm *.exe
+rm FFPlayLib.dll
+
+cp ./configs/config-win32.h ./config.h
+gcc -I. -O3 -c -o cmdutils.o cmdutils.c
+gcc -DDEF_BUILD_DLL -I. -I./ -I/usr/local/include/SDL -Dmain=SDL_main -c -o FFPlayLib.o FFPlayLib.c
+gcc -shared -o FFPlayLib.dll FFPlayLib.o cmdutils.o -lavdevice -lavformat -lavcodec -lswresample -lswscale -lavutil -lavicap32 -lws2_32 -liconv -L/usr/local/lib -lmingw32 -lSDLmain -lSDL -lm -lpsapi -ladvapi32 -lshell32
+strip FFPlayLib.dll
+
+gcc -I. -I./ -I/usr/local/include/SDL -Dmain=SDL_main -c -o FFPlay.o FFPlay.c
+gcc -o FFPlay.exe FFPlay.o FFPlayLib.dll
+strip FFPlay.exe
+
+cp FFPlay.exe ./Examples/Bin
+cp FFPlayLib.dll ./Examples/Bin
+
+rm ./config.h
+rm *.o
