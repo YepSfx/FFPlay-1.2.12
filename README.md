@@ -1,14 +1,8 @@
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+            FFPlay-1.2.12                                                    +
-+                                                                             +
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## FFPlay-1.2.12 ##
 
 
 This repository provides a wrapper library (FFPlayLib.dll) to use FFMPEG-1.2.12
-
 and exmaple projects to use the wrapper library. 
-
-
 
 The FFPlayLib.dll is a dynamic library converted from ffplay.c in ffplay-1.2.12.
 It helps to use functions in ffplay.c so that it can play any files that 
