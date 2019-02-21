@@ -899,11 +899,15 @@ static void video_image_display(VideoState *is)
             }
             else
             {
+                SDL_LockYUVOverlay (vp->bmp);
                 SDL_DisplayYUVOverlay(vp->bmp, &rect);    //VIDEO Data Callback location
+                SDL_UnlockYUVOverlay (vp->bmp);                                
             }
             break;
           default:
+                SDL_LockYUVOverlay (vp->bmp);
                 SDL_DisplayYUVOverlay(vp->bmp, &rect);    //VIDEO Data Callback location
+                SDL_UnlockYUVOverlay (vp->bmp);                                
             break;
         }
 

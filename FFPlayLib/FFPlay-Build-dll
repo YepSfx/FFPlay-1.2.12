@@ -12,8 +12,8 @@ gcc -I. -I./ -I/usr/local/include/SDL -Dmain=SDL_main -c -o FFPlay.o FFPlay.c
 gcc -o FFPlay.exe FFPlay.o FFPlayLib.dll
 strip FFPlay.exe
 
-cp FFPlay.exe ./Examples/Bin
-cp FFPlayLib.dll ./Examples/Bin
+cp FFPlay.exe ../Applications/Bin
+cp FFPlayLib.dll ../Applications/Bin
 
 rm ./config.h
 rm *.o
