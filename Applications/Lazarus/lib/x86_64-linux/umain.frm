@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 254
+  Left = 252
   Height = 441
-  Top = 221
+  Top = 243
   Width = 1030
   Caption = 'lazPlayer'
   ClientHeight = 441
@@ -86,9 +86,9 @@ object frmMain: TfrmMain
   end
   object Label1: TLabel
     Left = 8
-    Height = 17
-    Top = 424
-    Width = 45
+    Height = 16
+    Top = 425
+    Width = 37
     Anchors = [akLeft, akBottom]
     Caption = 'Label1'
     ParentColor = False
@@ -110,10 +110,10 @@ object frmMain: TfrmMain
     TabOrder = 5
   end
   object Label2: TLabel
-    Left = 804
-    Height = 17
+    Left = 823
+    Height = 16
     Top = 134
-    Width = 109
+    Width = 90
     Anchors = [akTop, akRight]
     Caption = 'Debug Message'
     ParentColor = False
