@@ -308,15 +308,19 @@
 		__declspec(dllexport) void FinalizeDLL();
 		__declspec(dllexport) int  SetupYuvPlayer(void *sender, unsigned int yuvHandle, void *eventInfo, void *eventExit, void *eventAudio, void *eventResize, void *eventStatus);
 		__declspec(dllexport) int  SetupRgbPlayer(void *sender, unsigned int yuvHandle, void *eventInfo, void *eventExit, void *eventAudio, void *eventVideo, void *eventResize, void *eventStatus);
+		__declspec(dllexport) int  SetupCLIPlayer(void *sender, void *eventInfo, void *eventExit, void *eventAudio, void *eventResize, void *eventStatus);
 		__declspec(dllexport) void SetPlayerFileName(const char *FileName);
 		__declspec(dllexport) const char* GetPlayerFileName();
-		__declspec(dllexport) int  StartPlayer();
-		__declspec(dllexport) void StopPlayer();
+		__declspec(dllexport) int  StartThreadPlayer();
+		__declspec(dllexport) void StopThreadPlayer();
 		__declspec(dllexport) void PauseResumePlayer();
+		__declspec(dllexport) int  OpenPlayerStream();
+		__declspec(dllexport) void StartPlayer();
+		__declspec(dllexport) void StopPlayer();
 		__declspec(dllexport) void ClearPlayer();
 		__declspec(dllexport) int  IsPlayerRunning();
-		__declspec(dllexport) void ConvertYUV420pToRGB32(void *yuvData, void *rgbData);
-		__declspec(dllexport) void ConvertYUV420pToRGB24(void *yuvData, void *rgbData);
+		__declspec(dllexport) void ConvertYUV420pToRGB32(void *yuvData, void *rgbData, int *pWidth, int *pHeight);
+		__declspec(dllexport) void ConvertYUV420pToRGB24(void *yuvData, void *rgbData, int *pWidth, int *pHeight);
 		__declspec(dllexport) void GetPlayerTimes(INT64	*duration_in_us, double *current_in_s);
 		__declspec(dllexport) int  GetPlayerStatus();
 		__declspec(dllexport) void GetPlayerAudioFormat(int *freq, unsigned char *channels, unsigned short *format, unsigned short *samplesinbuffer, unsigned long *buffersizeinbyte);
@@ -332,11 +336,13 @@
 
 			if (hMod != NULL)
 			{
+				OutputDebugString(_T("-> Load library!\n"));
 				return ImportDLL();
 			}
 			else
 			{
 				hMod = NULL;
+				OutputDebugString(_T("-> Fail to load library!\n"));
 				return 1;
 			}
 		}
@@ -344,7 +350,39 @@
 	void FinalizeDLL()
 	{
 		if (hMod)
+		{
 			FreeLibrary(hMod);
+			OutputDebugString(_T("-> Unload library!\n"));
+		}
+		else
+		{
+			OutputDebugString(_T("-> Fail to unload library!\n"));
+		}
+	}
+
+	int SetupCLIPlayer(void *sender, void *eventInfo, void *eventExit, void *eventAudio, void *eventResize, void *eventStatus)
+	{
+		FFP_events.sender				= sender;
+		FFP_events.current_in_s			= 0;
+		FFP_events.duration_in_us		= 0;
+		FFP_events.event_audio			= OnEventAudio;
+		FFP_events.event_exit			= OnEventExit;
+		FFP_events.event_play_status	= OnEventStatus;
+		FFP_events.event_info			= OnEventInfo;
+		FFP_events.event_video			= NULL;// OnEventVideo;
+		FFP_events.event_video_resize	= OnEventResize;
+		FFP_events.screenID				= 0;
+		FFP_events.ui_type				= FFP_CLI;
+		FFP_events.playstatus			= FFP_STATUS_STOP;
+
+		OnExit = (FFP_EVENT_EXIT)eventExit;
+		OnInfo = (FFP_EVENT_INFO)eventInfo;
+		OnAudio = (FFP_EVENT_AUDIO)eventAudio;
+		OnVideo = NULL;
+		OnResize = (FFP_EVENT_VIDEORESIZE)eventResize;
+		OnStatus = (FFP_EVENT_PLAYSTATUS)eventStatus;
+
+		return multimedia_init_device(&FFP_events);
 	}
 
 	int SetupYuvPlayer(void *sender, unsigned int yuvHandle, void *eventInfo, void *eventExit, void *eventAudio, void *eventResize, void *eventStatus)
@@ -412,7 +450,7 @@
 		multimedia_stream_start();
 	}
 
-	int StartPlayer()
+	int StartThreadPlayer()
 	{
 		if (multimedia_stream_open() == FFP_FALSE)
 			return 1;
@@ -422,7 +460,7 @@
 		return 0;
 	}
 
-	void StopPlayer()
+	void StopThreadPlayer()
 	{
 		multimedia_stream_stop();
 		FFP_events.playstatus   = FFP_STATUS_STOP;
@@ -430,6 +468,24 @@
 		FFP_events.duration_in_us = 0;
 	}
 
+	int OpenPlayerStream()
+	{
+		if (multimedia_stream_open() == FFP_FALSE)
+			return 1;
+		else
+			return 0;
+	}
+
+	void StartPlayer()
+	{
+		multimedia_stream_start();
+	}
+	
+	void StopPlayer()
+	{
+		StopThreadPlayer();
+	}
+	
 	void PauseResumePlayer()
 	{
 		multimedia_pause_resume();
@@ -445,22 +501,26 @@
 		return multimedia_event_loop_alive();
 	}
 
-	void ConvertYUV420pToRGB32(void *yuvData, void *rgbData)
+	void ConvertYUV420pToRGB32(void *yuvData, void *rgbData, int *pWidth, int *pHeight)
 	{
 		FFP_YUV420P_DATA *pYUV;
 		unsigned char    *pRGB;
 		pYUV = (FFP_YUV420P_DATA*)yuvData;
 		pRGB = (unsigned char*)rgbData;
 		multimedia_yuv420p_to_rgb32(pYUV, pRGB);
+		*pWidth  = pYUV->w;
+		*pHeight = pYUV->h;
 	}
 
-	void ConvertYUV420pToRGB24(void *yuvData, void *rgbData)
+	void ConvertYUV420pToRGB24(void *yuvData, void *rgbData, int *pWidth, int *pHeight)
 	{
 		FFP_YUV420P_DATA *pYUV;
 		unsigned char    *pRGB;
 		pYUV = (FFP_YUV420P_DATA*)yuvData;
 		pRGB = (unsigned char*)rgbData;
 		multimedia_yuv420p_to_rgb24(pYUV, pRGB);
+		*pWidth  = pYUV->w;
+		*pHeight = pYUV->h;
 	}
 
 	int GetPlayerStatus()

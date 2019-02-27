@@ -11,7 +11,7 @@
 #define new DEBUG_NEW
 #endif
 
-//#define		DEF_RGB
+#define		DEF_RGB
 
 // CMFC_PlayerDlg dialog
 
