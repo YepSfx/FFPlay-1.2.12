@@ -2471,6 +2471,7 @@ static void sdl_audio_callback(void *opaque, Uint8 *stream, int len)
         len1 = is->audio_buf_size - is->audio_buf_index;
         if (len1 > len)
             len1 = len;
+#if 1
 #if 1        
         if (pWorkBuff)
         {
@@ -2493,6 +2494,9 @@ static void sdl_audio_callback(void *opaque, Uint8 *stream, int len)
         }
         memcpy(stream, pWorkBuff, len1);
 #endif        
+#else
+        memcpy(stream, (uint8_t *)is->audio_buf + is->audio_buf_index, len1); 
+#endif
         len -= len1;
         stream += len1;
         is->audio_buf_index += len1;

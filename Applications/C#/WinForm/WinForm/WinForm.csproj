@@ -108,17 +108,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="avcodec-54.dll" />
-    <Content Include="avdevice-54.dll" />
-    <Content Include="avformat-54.dll" />
-    <Content Include="avutil-52.dll" />
-    <Content Include="FFPlayLib.dll" />
     <Content Include="FFP_decoder.dll" />
-    <Content Include="libgcc_s_dw2-1.dll" />
-    <Content Include="libiconv-2.dll" />
-    <Content Include="SDL.dll" />
-    <Content Include="swresample-0.dll" />
-    <Content Include="swscale-2.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -102,9 +102,7 @@ void CallbackResize(void *sender, int w , int h)
 
 void MessageInfo(void *sender, int infoCode, char *Message)
 {
-//    printf("\n[Message: ");
-//    printf( Message );
-//    printf(" ]\n\n");
+    printf( Message );
 }
 
 int main(int argc, char **argv)

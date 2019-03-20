@@ -32,9 +32,7 @@
             this.mButtonPause = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mButtonStop = new System.Windows.Forms.Button();
-            this.mButtonResume = new System.Windows.Forms.Button();
             this.mPanelRGB = new System.Windows.Forms.Label();
-            this.mButtonCLI = new System.Windows.Forms.Button();
             this.mPanelYUV = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
@@ -56,6 +54,7 @@
             this.mButtonPause.TabIndex = 2;
             this.mButtonPause.Text = "Pause";
             this.mButtonPause.UseVisualStyleBackColor = true;
+            this.mButtonPause.Click += new System.EventHandler(this.mButtonPause_Click);
             // 
             // openFileDialog
             // 
@@ -71,38 +70,19 @@
             this.mButtonStop.UseVisualStyleBackColor = true;
             this.mButtonStop.Click += new System.EventHandler(this.mButtonStop_Click);
             // 
-            // mButtonResume
-            // 
-            this.mButtonResume.Location = new System.Drawing.Point(324, 463);
-            this.mButtonResume.Name = "mButtonResume";
-            this.mButtonResume.Size = new System.Drawing.Size(94, 23);
-            this.mButtonResume.TabIndex = 4;
-            this.mButtonResume.Text = "Resume";
-            this.mButtonResume.UseVisualStyleBackColor = true;
-            // 
             // mPanelRGB
             // 
-            this.mPanelRGB.Location = new System.Drawing.Point(521, 26);
+            this.mPanelRGB.Location = new System.Drawing.Point(670, 26);
             this.mPanelRGB.Name = "mPanelRGB";
-            this.mPanelRGB.Size = new System.Drawing.Size(489, 289);
+            this.mPanelRGB.Size = new System.Drawing.Size(340, 289);
             this.mPanelRGB.TabIndex = 6;
             this.mPanelRGB.Text = "RGB";
-            // 
-            // mButtonCLI
-            // 
-            this.mButtonCLI.Location = new System.Drawing.Point(446, 463);
-            this.mButtonCLI.Name = "mButtonCLI";
-            this.mButtonCLI.Size = new System.Drawing.Size(92, 23);
-            this.mButtonCLI.TabIndex = 7;
-            this.mButtonCLI.Text = "CLI Play";
-            this.mButtonCLI.UseVisualStyleBackColor = true;
-            this.mButtonCLI.Click += new System.EventHandler(this.mButtonCLI_Click);
             // 
             // mPanelYUV
             // 
             this.mPanelYUV.Location = new System.Drawing.Point(24, 26);
             this.mPanelYUV.Name = "mPanelYUV";
-            this.mPanelYUV.Size = new System.Drawing.Size(491, 394);
+            this.mPanelYUV.Size = new System.Drawing.Size(584, 394);
             this.mPanelYUV.TabIndex = 8;
             // 
             // frmMain
@@ -111,9 +91,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1035, 498);
             this.Controls.Add(this.mPanelYUV);
-            this.Controls.Add(this.mButtonCLI);
             this.Controls.Add(this.mPanelRGB);
-            this.Controls.Add(this.mButtonResume);
             this.Controls.Add(this.mButtonStop);
             this.Controls.Add(this.mButtonPause);
             this.Controls.Add(this.mButtonPlay);
@@ -135,9 +113,7 @@
         private System.Windows.Forms.Button mButtonPause;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Button mButtonStop;
-        private System.Windows.Forms.Button mButtonResume;
         private System.Windows.Forms.Label mPanelRGB;
-        private System.Windows.Forms.Button mButtonCLI;
         private System.Windows.Forms.Panel mPanelYUV;
     }
 }

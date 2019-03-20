@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 
@@ -9,11 +9,17 @@ namespace CLI
 {
     class CLI
     {
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void OnExitCallback(IntPtr sender, int exitCode);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void OnInfoCallback(IntPtr sender, int infoCode, IntPtr Message);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void OnAudioCallback(IntPtr sender, IntPtr AudioBuffer, int BufferLengthInByte);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void OnVideoCallback(IntPtr sender, IntPtr yuvData);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void OnVideoResizeCallback(IntPtr sender, int width, int height);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void OnPlayStatusCallback(IntPtr sender, int status);
 
         [DllImport(@".\FFP_decoder.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -56,14 +62,8 @@ namespace CLI
         public static extern IntPtr GetPlayerFileName();
 
         [DllImport(@".\FFP_decoder.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int StartThreadPlayer();
-
-        [DllImport(@".\FFP_decoder.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void StopThreadPlayer();
-
-        [DllImport(@".\FFP_decoder.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int OpenPlayerStream();
-
+        
         [DllImport(@".\FFP_decoder.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void StartPlayer();
 
@@ -114,12 +114,12 @@ namespace CLI
 
         static public void OnAudio(IntPtr sender, IntPtr AudioBuffer, int BufferLengthInByte)
         {
-            Trace.WriteLine(@"->> Audio event");
+            //Trace.WriteLine(@"->> Audio event");
         }
 
         static public void OnVideo(IntPtr sender, IntPtr yuvData)
         {
-            Trace.WriteLine(@"->> Video event");
+            //Trace.WriteLine(@"->> Video event");
         }
 
         static public void OnVideoResize(IntPtr sender, int width, int height)
@@ -132,16 +132,14 @@ namespace CLI
             Trace.WriteLine(@"->> Player status: " + status.ToString());
         }
 
-
-        static void Main(string[] args)
+         static void Main(string[] args)
         {
             OnExitCallback OnExitCB             = OnExit;
             OnInfoCallback OnInfoCB             = OnInfo;
-            OnAudioCallback OnAudioCB = null;//OnAudio;
+            OnAudioCallback OnAudioCB           = OnAudio;
             OnVideoCallback OnvideoCB           = OnVideo;
             OnVideoResizeCallback OnResizeCB    = OnVideoResize;
             OnPlayStatusCallback OnPlayStatusCB = OnPlayStatus;
-
 
             string FileName = "", verName = "" ;
             IntPtr fileNamePtr;
@@ -164,17 +162,21 @@ namespace CLI
                     Trace.WriteLine(@">> Cannot set up the player!");                    
                     return;
                 }
-#if true
                 if (OpenPlayerStream() != 0)
                 {
                     ClearPlayer();
                     Trace.WriteLine(@"Cannot open the stream!");
                     return;
                 }
-                StartPlayer();
-#else
-                StartThreadPlayer();
-#endif
+
+                try
+                {
+                    StartPlayer();
+                }
+                catch
+                {
+                    Trace.WriteLine(@"Cannot run the stream!");
+                }
                 Marshal.FreeHGlobal(fileNamePtr);
             }
             FinalizeDLL();

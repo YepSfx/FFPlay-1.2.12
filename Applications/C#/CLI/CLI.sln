@@ -5,6 +5,12 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI", "CLI\CLI.csproj", "{BCCDA80D-8AAD-446C-B010-7A036166312B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{14EBEC55-262E-45BF-9B90-75AC8E3CD5D6}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Bin\FFP_decoder.dll = ..\..\Bin\FFP_decoder.dll
+		..\..\Bin\FFPlayLib.dll = ..\..\Bin\FFPlayLib.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
