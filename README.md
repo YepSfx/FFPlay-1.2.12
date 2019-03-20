@@ -17,6 +17,6 @@ This repository contains following two folders.
 
 * FFPlayLib: A folder to contain ffplay.c wrapper library
 * Applications: A folder to contain example applications to use the FFPlayLib
-               [C/C++, Delphi, Lazarus(Codetyphon) and so on]
+               [C/C++, Delphi, Lazarus(Codetyphon), C# and so on]
                
                
