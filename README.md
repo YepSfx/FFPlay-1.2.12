@@ -11,8 +11,12 @@ ffplay.c plays.
 Before use or build this library, the ffmpeg-1.2.12 library must be built and 
 the outputs must be shown within your path.
 
+The FFPlayLib is supporting Win32, Linux and Raspbian (Raspberry Pi).
+
 This repository contains following two folders.
 
 * FFPlayLib: A folder to contain ffplay.c wrapper library
 * Applications: A folder to contain example applications to use the FFPlayLib
                [C/C++, Delphi, Lazarus(Codetyphon) and so on]
+               
+               
