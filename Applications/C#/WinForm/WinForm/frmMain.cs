@@ -15,14 +15,19 @@ namespace WinForm
     {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void OnExitCallback(IntPtr sender, int exitCode);
+
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void OnInfoCallback(IntPtr sender, int infoCode, IntPtr Message);
+
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void OnAudioCallback(IntPtr sender, IntPtr AudioBuffer, int BufferLengthInByte);
+
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void OnVideoCallback(IntPtr sender, IntPtr yuvData);
+
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void OnVideoResizeCallback(IntPtr sender, int width, int height);
+
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void OnPlayStatusCallback(IntPtr sender, int status);
 
@@ -96,15 +101,26 @@ namespace WinForm
                                   IntPtr rgbData,
                                   ref int width, ref int height);
 
+        [DllImport(@".\FFP_decoder.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetPlayerResizeScreen(int width, int height);
+
         static public void OnExit(IntPtr sender, int exitCode)
         {
+            GCHandle mhWnd = GCHandle.FromIntPtr(sender);
+            frmMain frm = (frmMain)mhWnd.Target;
+            string debug = @"->> Player Exit: " + exitCode.ToString();
             Trace.WriteLine(@"->> Player Exit: " + exitCode.ToString());
+            frm.UpdateDebugString(debug);
         }
 
         static public void OnInfo(IntPtr sender, int infoCode, IntPtr Message)
         {
+            GCHandle mhWnd = GCHandle.FromIntPtr(sender);
+            frmMain frm = (frmMain)mhWnd.Target;
             string msg = Marshal.PtrToStringAnsi(Message);
+            string debug = @"->> Player Info: " + infoCode.ToString() + @" " + msg;
             Trace.WriteLine(@"->> Player Info: " + infoCode.ToString() + @" " + msg);
+            frm.UpdateDebugString(debug);
         }
 
         static public void OnAudio(IntPtr sender, IntPtr AudioBuffer, int BufferLengthInByte)
@@ -124,20 +140,36 @@ namespace WinForm
 
         static public void OnPlayStatus(IntPtr sender, int status)
         {
+            GCHandle mhWnd = GCHandle.FromIntPtr(sender);
+            frmMain frm = (frmMain)mhWnd.Target;
+            string debug = @"->> Player status: " + status.ToString();
             Trace.WriteLine(@"->> Player status: " + status.ToString());
+            frm.UpdateDebugString(debug);
         }
 
         private Thread mPlayingThread;
-
+        private GCHandle mForm;
         public frmMain()
         {
             InitializeComponent();
             mPanelYUV.Enabled = true;
             mPanelYUV.Visible = true;
-            mPanelRGB.Enabled = false;
-            mPanelRGB.Visible = false;
+            mForm = GCHandle.Alloc(this);
         }
 
+        public delegate void InvokeMethod(string msg);
+
+        public void UpdateDebugString(string msg)
+        {
+            listBoxDebug.BeginInvoke(new InvokeMethod(UpdateDebugMethod), new object[] { msg });
+        }
+
+        private void UpdateDebugMethod(string msg)
+        {
+            listBoxDebug.Items.Add(msg);
+            listBoxDebug.SelectedIndex = listBoxDebug.Items.Count - 1;
+        }
+        
         private void frmMain_Load(object sender, EventArgs e)
         {
             int rtn = InitilizeDLL();
@@ -150,6 +182,9 @@ namespace WinForm
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (IsPlayerRunning() == 1)
+                        StopPlayingThread();
+
             Trace.WriteLine(@">> WinForm Closing!");
         }
 
@@ -157,6 +192,7 @@ namespace WinForm
         {
             FinalizeDLL();
             Trace.WriteLine(@">> WinForm Closed!");
+            mForm.Free();
         }
 
         private void StartPlayingThread()
@@ -171,18 +207,16 @@ namespace WinForm
             mPlayingThread.Join();
         }
 
+        OnExitCallback OnExitCB = OnExit;
+        OnInfoCallback OnInfoCB = OnInfo;
+        OnAudioCallback OnAudioCB = OnAudio;
+        OnVideoCallback OnVideoCB = OnVideo;
+        OnVideoResizeCallback OnResizeCB = OnVideoResize;
+        OnPlayStatusCallback OnPlayStatusCB = OnPlayStatus;
+
         private void mButtonPlay_Click(object sender, EventArgs e)
         {
-            OnExitCallback          OnExitCB        = OnExit;
-            OnInfoCallback          OnInfoCB        = OnInfo;
-            OnAudioCallback         OnAudioCB       = OnAudio;
-            OnVideoCallback         OnVideoCB       = OnVideo;
-            OnVideoResizeCallback   OnResizeCB      = OnVideoResize;
-            OnPlayStatusCallback    OnPlayStatusCB  = OnPlayStatus;
-
-            GCHandle mForm = GCHandle.Alloc(this);
             IntPtr self = (IntPtr)mForm;
-
             UInt32 hYuv = (UInt32)mPanelYUV.Handle;
 
             string FileName = "", verName = "";
@@ -213,12 +247,14 @@ namespace WinForm
 
                 }
                 StartPlayingThread();
+                SetPlayerResizeScreen(mPanelYUV.Width, mPanelYUV.Height);
             }
         }
 
         private void mButtonStop_Click(object sender, EventArgs e)
         {
-            StopPlayingThread();
+            if (IsPlayerRunning() == 1)
+                StopPlayingThread();
         }
 
         private void mButtonPause_Click(object sender, EventArgs e)

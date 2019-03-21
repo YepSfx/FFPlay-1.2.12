@@ -1,0 +1,15 @@
+﻿<Window x:Name="mainForm" x:Class="Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WPF FFPlayer" Height="688.114" Width="1143.114" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Loaded="mainForm_Loaded" Closed="mainForm_Closed" Closing="mainForm_Closing">
+    <Grid Margin="0,0,-6.114,-30">
+        <Grid x:Name="gridShow" HorizontalAlignment="Left" Height="570" Margin="14,10,0,0" VerticalAlignment="Top" Width="840" Background="Black">
+            <WindowsFormsHost x:Name="mHost" HorizontalAlignment="Left" Height="550" Margin="10,10,0,0" VerticalAlignment="Top" Width="820" RenderTransformOrigin="0.18,-0.29" Background="#FF2A9142"/>
+        </Grid>
+        <Grid x:Name="gridControl" HorizontalAlignment="Left" Height="61" Margin="14,587,0,0" VerticalAlignment="Top" Width="711" Grid.ColumnSpan="2">
+            <Button x:Name="buttonPlay" Content="Play" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="89.528" Height="35.205" Click="buttonPlay_Click"/>
+            <Button x:Name="buttonStop" Content="Stop" HorizontalAlignment="Left" Margin="104.528,10,0,0" VerticalAlignment="Top" Width="89.528" Height="35.205" Click="buttonStop_Click"/>
+        </Grid>
+        <ListBox x:Name="listboxDebug" HorizontalAlignment="Left" Height="638" Margin="874,10,0,0" VerticalAlignment="Top" Width="247"/>
+    </Grid>
+</Window>

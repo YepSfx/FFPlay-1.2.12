@@ -32,8 +32,8 @@
             this.mButtonPause = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mButtonStop = new System.Windows.Forms.Button();
-            this.mPanelRGB = new System.Windows.Forms.Label();
             this.mPanelYUV = new System.Windows.Forms.Panel();
+            this.listBoxDebug = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // mButtonPlay
@@ -70,28 +70,28 @@
             this.mButtonStop.UseVisualStyleBackColor = true;
             this.mButtonStop.Click += new System.EventHandler(this.mButtonStop_Click);
             // 
-            // mPanelRGB
-            // 
-            this.mPanelRGB.Location = new System.Drawing.Point(670, 26);
-            this.mPanelRGB.Name = "mPanelRGB";
-            this.mPanelRGB.Size = new System.Drawing.Size(340, 289);
-            this.mPanelRGB.TabIndex = 6;
-            this.mPanelRGB.Text = "RGB";
-            // 
             // mPanelYUV
             // 
             this.mPanelYUV.Location = new System.Drawing.Point(24, 26);
             this.mPanelYUV.Name = "mPanelYUV";
-            this.mPanelYUV.Size = new System.Drawing.Size(584, 394);
+            this.mPanelYUV.Size = new System.Drawing.Size(649, 394);
             this.mPanelYUV.TabIndex = 8;
+            // 
+            // listBoxDebug
+            // 
+            this.listBoxDebug.FormattingEnabled = true;
+            this.listBoxDebug.Location = new System.Drawing.Point(687, 26);
+            this.listBoxDebug.Name = "listBoxDebug";
+            this.listBoxDebug.Size = new System.Drawing.Size(228, 459);
+            this.listBoxDebug.TabIndex = 9;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1035, 498);
+            this.ClientSize = new System.Drawing.Size(927, 498);
+            this.Controls.Add(this.listBoxDebug);
             this.Controls.Add(this.mPanelYUV);
-            this.Controls.Add(this.mPanelRGB);
             this.Controls.Add(this.mButtonStop);
             this.Controls.Add(this.mButtonPause);
             this.Controls.Add(this.mButtonPlay);
@@ -113,8 +113,8 @@
         private System.Windows.Forms.Button mButtonPause;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Button mButtonStop;
-        private System.Windows.Forms.Label mPanelRGB;
         private System.Windows.Forms.Panel mPanelYUV;
+        private System.Windows.Forms.ListBox listBoxDebug;
     }
 }
 
