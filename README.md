@@ -21,3 +21,4 @@ This repository contains following two folders.
                
                If you have any questions, please e-mail me @ yepsfx@gmail.com
                
+More infomations for Audio/Video sync are at http://dranger.com/ffmpeg/tutorial01.html
