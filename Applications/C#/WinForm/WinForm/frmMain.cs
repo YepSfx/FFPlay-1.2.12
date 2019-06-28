@@ -149,6 +149,7 @@ namespace WinForm
 
         private Thread mPlayingThread;
         private GCHandle mForm;
+        private IntPtr fileNamePtr;
         public frmMain()
         {
             InitializeComponent();
@@ -205,6 +206,7 @@ namespace WinForm
         {
             StopPlayer();
             mPlayingThread.Join();
+            Marshal.FreeHGlobal(fileNamePtr);
         }
 
         OnExitCallback OnExitCB = OnExit;
@@ -225,7 +227,7 @@ namespace WinForm
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 FileName = openFileDialog.FileName;
-                IntPtr fileNamePtr;
+
                 fileNamePtr = (IntPtr)Marshal.StringToHGlobalAnsi(FileName);
                 SetPlayerFileName(fileNamePtr);
                 verName = Marshal.PtrToStringAnsi( GetPlayerFileName() );
@@ -236,6 +238,7 @@ namespace WinForm
                 {
                     ClearPlayer();
                     MessageBox.Show(@"Cannot set up the player!");
+                    Marshal.FreeHGlobal(fileNamePtr);
                     return;
                 }
 
@@ -243,6 +246,7 @@ namespace WinForm
                 {
                     ClearPlayer();
                     MessageBox.Show(@"Cannot open the stream!");
+                    Marshal.FreeHGlobal(fileNamePtr);
                     return;
 
                 }

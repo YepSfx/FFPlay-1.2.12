@@ -169,6 +169,7 @@ namespace Wpf
         private GCHandle mForm;
         private Microsoft.Win32.OpenFileDialog mOpenFileDialog;
         public delegate void InvokeMethod(string msg);
+        private IntPtr fileNamePtr;
 
         public void UpdateDebugString(string msg)
         {
@@ -196,6 +197,7 @@ namespace Wpf
         {
             StopPlayer();
             mPlayingThread.Join();
+            Marshal.FreeHGlobal(fileNamePtr);
         }
 #else
         private void StartPlayingThread()
@@ -257,7 +259,7 @@ namespace Wpf
             if (mOpenFileDialog.ShowDialog() == true)
             {
                 FileName = mOpenFileDialog.FileName;
-                IntPtr fileNamePtr;
+
                 fileNamePtr = (IntPtr)Marshal.StringToHGlobalAnsi(FileName);
                 SetPlayerFileName(fileNamePtr);
                 verName = Marshal.PtrToStringAnsi(GetPlayerFileName());
@@ -267,6 +269,7 @@ namespace Wpf
                 if (rtn != 0)
                 {
                     ClearPlayer();
+                    Marshal.FreeHGlobal(fileNamePtr);
                     System.Windows.MessageBox.Show(@"Cannot set up the player!");
                     return;
                 }
@@ -274,6 +277,7 @@ namespace Wpf
                 if (OpenPlayerStream() != 0)
                 {
                     ClearPlayer();
+                    Marshal.FreeHGlobal(fileNamePtr);
                     System.Windows.MessageBox.Show(@"Cannot open the stream!");
                     return;
 
