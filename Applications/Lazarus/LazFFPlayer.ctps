@@ -8,6 +8,7 @@
       <Unit0>
         <Filename Value="LazFFPlayer.ppr"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <CursorPos X="25" Y="7"/>
         <UsageCount Value="52"/>
@@ -15,12 +16,10 @@
       </Unit0>
       <Unit1>
         <Filename Value="umain.pas"/>
-        <FRMtype Value="200"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <CursorPos X="3" Y="5"/>
         <UsageCount Value="52"/>
         <Loaded Value="True"/>

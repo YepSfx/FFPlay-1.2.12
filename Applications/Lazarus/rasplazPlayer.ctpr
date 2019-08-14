@@ -50,7 +50,7 @@
         <ResourceBaseClass Value="Form"/>
       </Unit1>
       <Unit2>
-        <Filename Value="STImultimedia.pas"/>
+        <Filename Value="FFPlay.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit2>
     </Units>
@@ -63,7 +63,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <Libraries Value="C:\codetyphon\binLibraries\arm-linux-pi\;arm-linux-player"/>
+      <Libraries Value="C:\codetyphon\binLibraries\arm-linux-pi;arm-linux-player"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <CodeGeneration>
