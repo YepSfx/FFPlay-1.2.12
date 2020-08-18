@@ -1,5 +1,6 @@
 #ifdef __MINGW32__
   #undef main /* We don't want SDL to override our main() */
+  typedef long long int64_t;  
 #endif
 
 #ifdef DEF_BUILD_DLL
@@ -18,7 +19,7 @@
 #define FFP_AUDIO_S16MSB	0x9010	                  /**< As above, but big-endian byte order */
 #define FFP_AUDIO_U16	    FFP_AUDIO_U16LSB
 #define FFP_AUDIO_S16	    FFP_AUDIO_S16LSB
-
+  
 typedef enum {
     FFP_CLI = 0,
     FFP_GUI
