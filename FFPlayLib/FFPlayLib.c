@@ -3682,11 +3682,11 @@ int opt_codec(void *optctx, const char *opt, const char *arg)
 
 static int dummy;
 
-static VideoState  *is;
+static VideoState  *FFP_is;
 
 static void __ClearVideoState()
 {
-    is = NULL;
+    FFP_is = NULL;
 }
 
 static const OptionDef options[] = {
@@ -3800,9 +3800,9 @@ FFP_BOOL EXPORTDLL multimedia_stream_open()
 {
     FFP_BOOL rtn = FFP_FALSE;
     
-    is = stream_open(input_filename, file_iformat);
+    FFP_is = stream_open(input_filename, file_iformat);
     
-    if (is)
+    if (FFP_is)
     {
        isFileOpen = 1;
        rtn = FFP_TRUE;
@@ -3813,7 +3813,7 @@ FFP_BOOL EXPORTDLL multimedia_stream_open()
 void EXPORTDLL multimedia_stream_stop()
 {
     isFileOpen = 0;
-    do_stop(is);
+    do_stop(FFP_is);
 }
 
 void EXPORTDLL multimedia_stream_start()
@@ -3822,14 +3822,14 @@ void EXPORTDLL multimedia_stream_start()
   switch(FFP_events->ui_type)
   {
     case FFP_CLI:
-      event_cli_loop(is);
+      event_cli_loop(FFP_is);
       break;
     case FFP_GUI:
-      event_gui_loop(is);      
+      event_gui_loop(FFP_is);      
       break;
     default:
       __sendInfoMessage( FFP_INFO_WARNING, "STI_EVENT_TYPE is not defined. Set to default (STI_EVENT_CLI)");
-      event_gui_loop(is);
+      event_gui_loop(FFP_is);
       break;      
   }
 #else
@@ -4111,7 +4111,7 @@ void multimedia_test_start()
 
 void multimedia_test_stop()
 {
-    do_stop(is);
+    do_stop(FFP_is);
 }
 
 void EXPORTDLL multimedia_yuv420p_to_rgb24(FFP_YUV420P_DATA *yuvData,unsigned char* rgbbuffer)   
@@ -4256,8 +4256,8 @@ int64_t EXPORTDLL multimedia_get_duration_in_mSec()
 
 void EXPORTDLL multimedia_pause_resume()
 {
-    if (is)
-      toggle_pause(is);
+    if (FFP_is)
+      toggle_pause(FFP_is);
 }
 
 int EXPORTDLL multimedia_event_loop_alive()
@@ -4272,6 +4272,6 @@ void multimedia_halt_palying()
 
 void multimedia_toggle_fullscreen()
 {
-    toggle_full_screen(is);
-    is->force_refresh = 1;
+    toggle_full_screen(FFP_is);
+    FFP_is->force_refresh = 1;
 }
