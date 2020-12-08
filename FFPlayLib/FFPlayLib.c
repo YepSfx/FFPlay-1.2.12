@@ -304,7 +304,7 @@ static char *vfilters = NULL;
 /* current context */
 static int is_full_screen;
 static int64_t audio_callback_time;
-static int isHalt = 0;
+
 static int isFileOpen = 0;
 static AVPacket flush_pkt;
 
@@ -841,11 +841,6 @@ static void video_image_display(VideoState *is)
     FFP_YUV420P_DATA    yuvData;
     int i;
 
-    if (isHalt)
-    {
-       __sendInfoMessage(FFP_INFO_NONE, "PLAY Video halts!");
-       return;
-    }    
     memset( &yuvData, 0 , sizeof(yuvData) );
 
     vp = &is->pictq[is->pictq_rindex];
@@ -2440,12 +2435,6 @@ static void sdl_audio_callback(void *opaque, Uint8 *stream, int len)
     int bytes_per_sec;
     int frame_size = av_samples_get_buffer_size(NULL, is->audio_tgt.channels, 1, is->audio_tgt.fmt, 1);
     void *pWorkBuff = NULL;
-    
-    if (isHalt)
-    {
-        __sendInfoMessage(FFP_INFO_NONE, "PLAY Audio halts!");;
-       return;
-    }    
   
     audio_callback_time = av_gettime();
 
@@ -3283,11 +3272,6 @@ static void refresh_loop_wait_event(VideoState *is, SDL_Event *event)
                     FFP_events->event_play_status( FFP_events->sender, FFP_EOF);
                 }
             }
-            if (isHalt)
-            {
-                __sendInfoMessage(FFP_INFO_DEBUG, "PLAY halts!");
-                break;
-            }
         }
         SDL_PumpEvents();
 
@@ -3544,13 +3528,6 @@ static void event_gui_loop(VideoState *cur_stream)
               break;
           default:
               break;
-        }
-        if (isHalt)
-        {
-           do_exit(cur_stream);
-           isQuit = 0;
-           __sendInfoMessage(FFP_INFO_NONE, "Event loop exit!");  
-           break;         
         }
         if (isQuit)
         {
@@ -3839,7 +3816,7 @@ void EXPORTDLL multimedia_stream_start()
 
 void EXPORTDLL multimedia_exit()
 {
-    do_exit(NULL);
+    //do_exit(NULL);    //Obsolete
 }
 
 void EXPORTDLL multimedia_reset_pointer()
@@ -3921,7 +3898,6 @@ int EXPORTDLL multimedia_init_device(FFP_EVENTS *sti_events)
     start_time = AV_NOPTS_VALUE;
     duration = AV_NOPTS_VALUE;
     
-    isHalt = 0;
     
     if (!display_disable) 
     {
@@ -3951,7 +3927,7 @@ int EXPORTDLL multimedia_init_device(FFP_EVENTS *sti_events)
     if (av_lockmgr_register(lockmgr)) 
     {
         __sendInfoMessage( FFP_INFO_ERROR, "Could not initialize lock manager!");
-        multimedia_exit();
+        do_exit(NULL); //multimedia_exit(); //Obsolete - multimedia_exit();
         rtn = 2;
         return rtn;
     }
@@ -3960,7 +3936,7 @@ int EXPORTDLL multimedia_init_device(FFP_EVENTS *sti_events)
                                     (FFP_events->ui_type==FFP_GUI))
     {
         __sendInfoMessage( FFP_INFO_ERROR, "Screen ID is empty!");
-        multimedia_exit();
+        do_exit(NULL); //multimedia_exit(); //Obsolete - multimedia_exit();
         rtn = 3;
         return rtn;
     }
@@ -4024,7 +4000,7 @@ static void event_test_loop()
           case SDL_QUIT:
           case FF_QUIT_EVENT:
               isQuit = 1;
-              do_exit( NULL );
+              do_exit( FFP_is );  //do_exit( NULL );
               break;
           default:
               break;
@@ -4267,7 +4243,7 @@ int EXPORTDLL multimedia_event_loop_alive()
 
 void multimedia_halt_palying()
 {
-    isHalt = 1;
+    multimedia_stream_stop(); 
 }
 
 void multimedia_toggle_fullscreen()
