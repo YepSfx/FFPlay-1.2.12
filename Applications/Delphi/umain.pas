@@ -250,14 +250,14 @@ end;
 
 procedure TfrmMain.updateScreen(Buffer: Pointer; w: Integer; h: Integer; Bpp: Integer);
   var pSrc, pDst : PByte;
-      lineLen : Integer;
+      lineLen,i : Integer;
 begin
   pSrc := Buffer;
   lineLen := w * Bpp;
   try
-    for h := 0 to h - 1 do
+    for i := 0 to h - 1 do
     begin
-      pDst := Image1.Picture.Bitmap.ScanLine[h];
+      pDst := Image1.Picture.Bitmap.ScanLine[i];
       CopyMemory( pDst, pSrc, lineLen);
       Inc(pSrc,lineLen);
     end;
