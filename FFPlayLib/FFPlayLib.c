@@ -3816,7 +3816,7 @@ void EXPORTDLL multimedia_stream_start()
 
 void EXPORTDLL multimedia_exit()
 {
-    //do_exit(NULL);    //Obsolete
+    do_exit(FFP_is);    //Obsolete
 }
 
 void EXPORTDLL multimedia_reset_pointer()
