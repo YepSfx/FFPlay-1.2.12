@@ -874,12 +874,6 @@ static void video_image_display(VideoState *is)
 
         calculate_display_rect(&rect, is->xleft, is->ytop, is->width, is->height, vp);
 
-        switch(FFP_events->ui_type)
-        {
-          case FFP_CLI:
-                SDL_DisplayYUVOverlay(vp->bmp, &rect);    //VIDEO Data Callback location
-            break;
-          case FFP_GUI:
             if (FFP_events->event_video)
             {
                 SDL_LockYUVOverlay (vp->bmp);
@@ -896,11 +890,6 @@ static void video_image_display(VideoState *is)
             {
                 SDL_DisplayYUVOverlay(vp->bmp, &rect);    //VIDEO Data Callback location
             }
-            break;
-          default:
-                SDL_DisplayYUVOverlay(vp->bmp, &rect);    //VIDEO Data Callback location
-            break;
-        }
 
         if (FFP_events->playstatus != FFP_PLAY)
         {

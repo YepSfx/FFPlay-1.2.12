@@ -31,21 +31,23 @@ void SaveFramebufferAsPPM(void* Buff, int w, int h, int Bpp)
 	int     redShift = 0;
 	int     blueShift = 16;
 	int     greenShift = 24;
-  static  int idx;
-	/* save one picture only if the last is older than 2 seconds */
+  	static  int idx;
+	
+/* save one picture only if the last is older than 2 seconds */
 	t1=time(NULL);
 	if( t1-t > 2)
 		t = t1;
 	else
 		return;
 
-  sprintf(FileName,"framebuffer_%d.ppm", idx++);
+  	sprintf(FileName,"framebuffer_%d.ppm", idx++);
 	f=fopen(FileName,"wb");
 	if(!f) 
 	{
 		ExitEvent(NULL, 4);
 	}
 
+	fprintf(f,"P6\n# %s\n%d %d\n255\n",FileName, w, h);	
 	for(j = 0 ; j < h*row_stride ; j += row_stride)
 	{
 		for( i = 0 ; i < w*Bpp ; i += Bpp) 
@@ -73,9 +75,8 @@ void PlayProgress(void *sender)
 
 void CallbackVideo(void *sender, FFP_YUV420P_DATA *YuvData)
 {
-     //multimedia_yuv420p_to_rgb32( YuvData, RGBBuff );
-     //SaveFramebufferAsPPM(RGBBuff, YuvData->w, YuvData->h, 4 ); 
-
+     multimedia_yuv420p_to_rgb32( YuvData, RGBBuff );
+     SaveFramebufferAsPPM(RGBBuff, YuvData->w, YuvData->h, 4 ); 
 } 
 
 void CallbackAudio(void *sender, unsigned char *buffer, int BufLenInByte)
