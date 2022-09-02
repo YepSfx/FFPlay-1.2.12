@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 252
+  Left = 459
   Height = 441
-  Top = 243
+  Top = 205
   Width = 1030
   Caption = 'lazPlayer'
   ClientHeight = 441
@@ -11,7 +11,7 @@ object frmMain: TfrmMain
   OnDestroy = FormDestroy
   OnResize = FormResize
   Position = poScreenCenter
-  LCLVersion = '6.6'
+  LCLVersion = '6.5'
   object Panel1: TPanel
     Left = 8
     Height = 376
@@ -23,6 +23,7 @@ object frmMain: TfrmMain
     Color = clBlack
     ParentColor = False
     TabOrder = 0
+    OnClick = Panel1Click
     OnResize = Panel1Resize
     object ImageRGB: TImage
       Left = 16

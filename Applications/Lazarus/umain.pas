@@ -2,7 +2,7 @@ unit umain;
 
 {$mode objfpc}{$H+}
 
-//{$DEFINE DEF_RGB}
+{$DEFINE DEF_RGB}
 
 interface
 
@@ -40,6 +40,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure Panel1Click(Sender: TObject);
     procedure Panel1Resize(Sender: TObject);
     procedure PanelYUVMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
@@ -286,6 +287,7 @@ begin
   Self.Caption := 'Win32 LazFFPlayer';
   ImageRGB.Picture.Bitmap.PixelFormat := pf32Bit;
   FresImage.PixelFormat := pf32Bit;
+  Panel1.DoubleBuffered := True;
   {$ELSE}
   Self.Caption := 'Linux lazPlayer';
   ImageRGB.Picture.Bitmap.PixelFormat := pf24Bit;
@@ -314,6 +316,11 @@ begin
 end;
 
 procedure TfrmMain.FormResize(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmMain.Panel1Click(Sender: TObject);
 begin
 
 end;

@@ -38,7 +38,6 @@
       </Unit0>
       <Unit1>
         <Filename Value="umain.pas"/>
-        <FRMtype Value="200"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmMain"/>
         <HasResources Value="True"/>
