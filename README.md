@@ -19,6 +19,6 @@ This repository contains following two folders.
 * Applications: A folder to contain example applications to use the FFPlayLib
                [C/C++, Delphi, Lazarus(Codetyphon), C# and so on]
                
-               If you have any questions, please e-mail me @ yepsfx@gmail.com
+              
                
 More infomations for Audio/Video sync are at http://dranger.com/ffmpeg/tutorial01.html
