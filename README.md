@@ -34,3 +34,6 @@ http://dranger.com/ffmpeg/tutorial01.html
 ## A similar project based on FFmpeg 3.4.x is available here: ##
 
 https://github.com/YepSfx/FFPlay-3.4.8
+
+---
+If you have any questions, please e-mail me @ cj.github.proj@gmail.com
